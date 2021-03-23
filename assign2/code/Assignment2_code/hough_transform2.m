@@ -39,9 +39,7 @@ for i = 3:length(inputs)
     
     % load pre-computed hough transform
     txt_name = ['hough_',num2str(inputs(i)),'.txt'];
-    wb = waitbar(0, 'Hough Transform');
     for x=1:M
-      waitbar(x/M, wb);
       for y=1:N
         if edge_img(x,y) == 1
           for angle = min_theta:max_theta-1
@@ -54,7 +52,6 @@ for i = 3:length(inputs)
       endfor
     endfor
     %save(txt_name,"table");
-    close(wb);
     
     % find the top 4 largest value
     max_arr = [0,0,0,0];
