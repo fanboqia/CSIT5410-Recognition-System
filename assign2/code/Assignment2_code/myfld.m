@@ -37,4 +37,26 @@
 %   you CANNOT use the following MATLAB functions:
 %   ClassificationDiscriminant, CLASSIFY, eval, mahal.
 function [output_class, w] = myfld(input_sample, class1_samples, class2_samples)
-
+  % step1: obtain N1,N2,N
+  [N1,N] = size(class1_samples);
+  [N2,N] = size(class2_samples);
+  
+  % step2: compute Sw^-1(ua-ui)
+  u1 = mean(class1_samples);
+  u2 = mean(class2_samples);
+  diff1 = class1_samples - u1;
+  diff2 = class2_samples - u2;
+  s1 = diff1'*diff1;
+  s2 = diff2'*diff2;
+  sw = s1 + s2;
+  w = inv(sw)*(u1-u2)';
+  w = w/norm(w);
+  
+  % step3: compute the seperation point
+  decision_boundary = 0.5*w'*(u1+u2)';
+  res = dot(w,input_sample);
+  if res >= decision_boundary
+    output_class = 1;
+  else
+    output_class = 2;
+  endif
